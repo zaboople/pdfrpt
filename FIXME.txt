@@ -1,0 +1,18 @@
+PLine really should change its width/height if you add to them. Sucks, though, because I used it the wrong way.
+
+Document
+  AbstractText
+  PText.toString
+  Verify once more
+    ReportItem
+    Report
+    FontInfo
+    SimplePDF
+    PRect
+    PTextLines
+  Done
+    PImage
+    PageInfo
+    PSpacer
+    PLine
+  

@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<project name="pdfrpt" basedir="." default="help">
+
+  <!--**********-->
+  <!--PROPERTIES-->
+  <!--**********-->
+  
+  <!--Properties: arbitrary environment prefix:-->
+  <property environment="env"/>
+  <property file="build.properties"/>  
+  
+  <!--Properties: directories:-->
+  <property name="java.dir" value="java"/>
+  <property name="build.dir" value="build"/>
+  <property name="dist.dir" value="dist"/>
+  <property name="lib.dir" value="lib"/>
+  <property name="appname" value="pdfrpt"/>
+  <property name="appname.version" value="${appname}.${VERSION.PDFRPT}"/>
+  
+  
+  <path id="classpath">
+    <fileset dir="${lib.dir}" includes="*.jar"/>
+  </path>
+  
+  
+  <!--**************-->
+  <!--TARGETS: HELP -->
+  <!--**************-->
+
+  <target name="help">
+    <echo>
+  clean:         
+    Deletes all generated classes etc.
+  compile:
+    Compile all Java files to ./build
+  jar:
+    Compiles and creates a dist/${appname}.jar file from contents of ./build
+  javadoc:
+    Creates javadoc in ./javadoc
+    </echo>
+  </target>
+
+  <!--****************-->
+  <!--TARGETS: CLEAN  -->
+  <!--****************-->
+
+  <target name="clean" description="Clean output directories">
+    <delete dir="javadoc"/>
+    <delete dir ="${build.dir}"/>
+    <delete dir ="${dist.dir}"/>
+    <delete dir="web/WEB-INF/classes/org"/>          
+    <delete file="${appname}.jar"/>          
+    <delete>
+      <fileset dir="." includes="*.pdf"/>
+    </delete>
+  </target>
+
+
+  <!--****************-->
+  <!--TARGETS: BUILD-->
+  <!--****************-->
+
+  <target name="compile" description="Compile main source tree java files">
+    <mkdir dir="${build.dir}"/>
+    <javac destdir="${build.dir}" debug="true"
+           deprecation="false" failonerror="true">
+      <src path="${java.dir}"/>
+      <classpath refid="classpath"/>
+    </javac>
+  </target>
+
+  <target name="javadoc" description="JavaDoc">
+    <mkdir dir="javadoc"/>
+    <javadoc sourcepath="java" access="public" destdir="javadoc" packagenames="org.**,com.**">
+      <classpath refid="classpath"/>
+      <fileset dir="java">
+        <include name="**/*.java"/>
+      </fileset>
+    </javadoc>
+  </target>
+
+ 
+  <target name="jar" depends="compile">
+    <mkdir dir ="${dist.dir}"/>
+    <jar basedir="./build" destfile="dist/${appname.version}.jar"/>
+  </target>
+
+  <!-- ********************* -->
+  <!-- TARGETS: DISTRIBUTION -->
+  <!-- ********************* -->
+
+  
+  <target name="dist" depends="dist.src,dist.bin,dist.site">
+    <echo>
+      Binary files in 
+    </echo>
+  </target>
+  <target name="dist.site" depends="dist.src,dist.bin">
+    <mkdir dir="${dist.dir}/site/"/>
+    <copy todir="${dist.dir}/site/javadoc">
+      <fileset dir="javadoc"/>
+    </copy>
+    <copy todir="${dist.dir}/site">
+      <fileset dir="${dist.dir}">
+        <include name="*.zip"/>
+      </fileset>
+    </copy>
+    <copy todir="${dist.dir}/site" file="license.html"/>
+    <copy todir="${dist.dir}/site" file="build.properties"/>
+  </target>
+  <target name="dist.bin" depends="jar,javadoc">
+    <mkdir dir ="${dist.dir}/bin"/>
+    <copy todir="${dist.dir}/bin/javadoc/">
+      <fileset dir="javadoc/"/>
+    </copy>
+    <copy todir="${dist.dir}/bin">
+      <fileset dir="dist" includes="*.jar"/>
+      <fileset dir="lib"  includes="*.jar"/>
+    </copy>
+    <zip destfile="${dist.dir}/${appname.version}.zip">
+      <zipfileset dir="${dist.dir}/bin" prefix="${appname.version}"/>
+    </zip>
+  </target>
+  <target name="dist.src" depends="clean">
+    <mkdir dir ="${dist.dir}"/>
+    <zip destfile="dist/${appname.version}.src.zip">
+      <zipfileset dir="." prefix="${appname.version}.src"
+                  excludes=".git/**/*,.git"/>
+    </zip>
+  </target>
+</project>
