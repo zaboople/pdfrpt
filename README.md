@@ -8,3 +8,7 @@ Features:
 * Page numbering
 * Handling of page overflow
 * General niceness
+
+[Javadoc is here](https://zaboople.github.io/javadoc/pdfrpt/overview-summary.html)
+
+[Download jar file binaries here](https://zaboople.github.io/downloads/pdfrpt.1.0.1.zip)
