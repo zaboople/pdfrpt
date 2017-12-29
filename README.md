@@ -10,7 +10,7 @@ I built this library because I didn't think iText - a Java PDF generation librar
 ### Documentation:
 [Javadoc is here](https://zaboople.github.io/javadoc/pdfrpt/overview-summary.html)
 
-[These tests](./tree/master/java/org/tmotte/pdfrpt/test/report) provide some easy-to-understand examples of basic usage.
+[These tests](/zaboople/pdfrpt/tree/master/java/org/tmotte/pdfrpt/test/report) provide some easy-to-understand examples of basic usage.
 
 ### Download:
 [Download jar file binaries here](https://zaboople.github.io/downloads/pdfrpt.1.0.1.zip)
