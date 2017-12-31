@@ -121,7 +121,7 @@
     </copy>
     <copy todir="${dist.dir}/bin">
       <fileset dir="dist" includes="*.jar"/>
-      <fileset dir="lib"  includes="*.jar"/>
+      <fileset dir="lib"  includes="*.jar,*.zip"/>
     </copy>
     <zip destfile="${dist.dir}/${appname.version}.zip">
       <zipfileset dir="${dist.dir}/bin" prefix="${appname.version}"/>
