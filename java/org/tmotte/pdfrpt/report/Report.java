@@ -22,8 +22,9 @@ import org.tmotte.pdfrpt.PageInfo;
           makeLineItem(...), myPageCounter, myFooter, myHeader
         );
       }
-      report.addFooterAndPrint(myFooter, pdf);</pre>
+      report.addFooterAndPrint(myFooter, pdf);
     }
+    </pre>
  */
 public class Report extends PGroup {
 
