@@ -1,17 +1,20 @@
 ## PDFRpt
 
-I built this library because I didn't think iText - a Java PDF generation library - was very concise & straightforward for my use case. PDFRpt acts as a "wrapper" API for iText while still allowing one to use the underlying iText core as necessary. Features:
+I built this library because I didn't think the popular iText library was very convenient & straightforward for my use case, which is general purpose report generation.
 
-* Relative positioning (this is 3px to the right/left/top/bottom of that)
-* Page numbering
-* Handling of page overflow & text wrapping
-* Basic graphics, fonts, colors, etc.
-* Precise control & alignment, down to the pixel
+PDFRpt acts as a "wrapper" API for iText, and requires no specific knowledge of iText on the part of the programmer. However, it still allows one to drill down to the underlying iText core to take advantage of advanced capabilities. Features:
+
+* Fast, efficient & lightweight - only 14 classes (not including iText)
+* Relative positioning with precise alignment down to the pixel
+* Automated handling of page overflow and numbering
+* Automatic text wrapping
+* Essential graphical capabilities include geometric shapes, embedded images, fonts & colors
+* Includes detailed javadocs & examples
 
 ### Documentation:
 [Javadoc is here](https://zaboople.github.io/javadoc/pdfrpt/overview-summary.html)
 
-[These tests](https://github.com/zaboople/pdfrpt/tree/master/java/org/tmotte/pdfrpt/test/report) provide some easy-to-understand examples of basic usage.
+[These tests](https://github.com/zaboople/pdfrpt/tree/master/java/org/tmotte/pdfrpt/test/report) provide some easy-to-understand, each-stands-on-its-own examples of usage.
 
 ### Download:
 [Download jar file binaries here](https://zaboople.github.io/downloads/pdfrpt.1.0.1.zip). The download includes a copy of the iText 5 jar file & javadocs.
