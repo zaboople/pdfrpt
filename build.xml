@@ -128,10 +128,12 @@
     </zip>
   </target>
   <target name="dist.src" depends="clean">
-    <mkdir dir ="${dist.dir}"/>
-    <zip destfile="dist/${appname.version}.src.zip">
-      <zipfileset dir="." prefix="${appname.version}.src"
-                  excludes=".git/**/*,.git"/>
-    </zip>
+    <!--
+      <mkdir dir ="${dist.dir}"/>
+      <zip destfile="dist/${appname.version}.src.zip">
+        <zipfileset dir="." prefix="${appname.version}.src"
+                    excludes=".git/**/*,.git"/>
+      </zip>
+    -->
   </target>
 </project>

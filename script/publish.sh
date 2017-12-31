@@ -26,3 +26,4 @@ fi
 echo
 cd ../zaboople.github.generate
 git status
+echo "Change to "$(pwd)" to finish publish"
