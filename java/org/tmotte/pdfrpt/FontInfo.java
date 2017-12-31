@@ -160,7 +160,7 @@ public class FontInfo {
     return maxAscent;
   }
   /**
-   * Gets the maximum descent (the height below the baseline) for the current font/size; note that this will be <= 0.
+   * Gets the maximum descent (the height below the baseline) for the current font/size; note that this will be &lt;= 0.
    * This is recomputed when the BaseFont or font size values are changed.
    */
   public float getMaxDescent() {

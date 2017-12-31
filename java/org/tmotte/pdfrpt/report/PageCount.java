@@ -11,7 +11,7 @@ import org.tmotte.pdfrpt.SimplePDF;
       //Create page count instance:
       PageCount pageCount=new PageCount();
 
-      //Create footer & header that use PageCount:
+      //Create footer and header that use PageCount:
       ReportItem
         header=new PText(pdf, "[Header] Page "+PText.REPLACE_CURR_PAGE+" of "+PText.REPLACE_PAGE_COUNT)
           .setPageCount(pageCount)
@@ -21,7 +21,7 @@ import org.tmotte.pdfrpt.SimplePDF;
 
       //Add items to the Report, incrementing page count and printing the footer/header as necessary:
       report.add(header);
-      for (int i=0; i<1000; i++){
+      for (int i=0; i&lt;1000; i++){
         report.addVertical(new PText(pdf, ""+i), pageCount, footer, header);
 
       //Finish:

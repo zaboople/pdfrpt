@@ -16,7 +16,7 @@ import org.tmotte.pdfrpt.PageInfo;
       ReportItem myHeader=makeMyHeader(...);
 
       report.add(myHeader);
-      for (i=0; i<100; i++) {
+      for (i=0; i&lt;100; i++) {
         //... Add items to the report
         report.addVertical(
           makeLineItem(...), myPageCounter, myFooter, myHeader
@@ -25,6 +25,10 @@ import org.tmotte.pdfrpt.PageInfo;
       report.addFooterAndPrint(myFooter, pdf);
     }
     </pre>
+ * <p>Note that Report does not actually need an instance of SimplePDF - which requires an OutputStream
+ * because iText requires same - until our final step, when we print the document. On the other hand,
+ * Report requires enough memory for the entire document structure <em>until</em> that point. This tradeoff
+ * should be acceptable for most use cases, but it bears keeping in mind.
  */
 public class Report extends PGroup {
 
@@ -41,9 +45,9 @@ public class Report extends PGroup {
     setHeight(pageHeight);
   }
   /**
-   * Shortcut to <code>Report(pageInfo.getWidth(), pageInfo.getHeight())</code>; here, Report will attempt
-   * to respect the margins set on <code>pageInfo</code> and provide positional information based on the space bounded
-   * by those margins, not the boundaries of the page itself.
+   * Shortcut to <code>Report(pageInfo.getWidth(), pageInfo.getHeight())</code>; here, Report will
+   * respect the margins set on <code>pageInfo</code> and calculate positioning based on the space bounded
+   * by those margins, not the boundaries of the PDF page itself.
    * @see PageInfo#setMargins(float, float, float, float)
    */
   public Report(PageInfo pageInfo) {

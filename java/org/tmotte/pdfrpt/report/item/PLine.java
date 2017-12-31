@@ -16,10 +16,10 @@ import com.itextpdf.text.BaseColor;
  * the line renders below the y-coordinate;
  *   <li>Vertical lines are pushed over using <code>setLeft()</code>, to the right of the x-coordinate.
  * </ul>
+ * <p>
  * This is done to simplify the process of adding
  * PLine instances to a PGroup, horizontally or vertically, so that they fit flush with other elements. This behavior is implemented
  * by both the PLine constructor and <code>setLineWidth()</code>.
- * </p>
  */
 public class PLine extends ReportItem {
   float xDist, yDist, lineWidth=1;

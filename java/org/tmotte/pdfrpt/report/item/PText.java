@@ -4,7 +4,7 @@ import org.tmotte.pdfrpt.report.ReportItem;
 import org.tmotte.pdfrpt.FontInfo;
 import org.tmotte.pdfrpt.SimplePDF;
 
-/** 
+/**
  * Allows for rendering of simple text data. For multi-line text, use PTextLines. <p>Notes:
  * <ul>
  *  <li>By default, text is left-aligned (left-justified).
@@ -14,7 +14,6 @@ import org.tmotte.pdfrpt.SimplePDF;
  *  <li>Setting the width of a PText has no effect on character spacing; extra space appears to the the left and/or right
  *      of the text depending on alignment.
  * </ul>
- * </p>
  */
 public class PText extends AbstractText {
   private String text;
@@ -65,7 +64,7 @@ public class PText extends AbstractText {
   /////////////////////
   // SIMPLE GET/SET: //
   /////////////////////
-  
+
   protected String getText() {
     return text;
   }
@@ -86,7 +85,7 @@ public class PText extends AbstractText {
    * is set to a value greater than the width of its rendered text.
    * @see #PText(FontInfo, float, String)
    * @see #setWidth(float)
-   */  
+   */
    public PText center() {
     rightAlign=false;
     center=true;
@@ -100,33 +99,33 @@ public class PText extends AbstractText {
     super.setPageCount(pc);
     return this;
   }
-  
-  
-  
+
+
+
   ////////////
   // PRINT: //
   ////////////
-  
-  /** 
-   * Prints this PText instance. Center/right-alignment is handled here. 
-   * Also, if a PageCount instance has been assigned, values for 
+
+  /**
+   * Prints this PText instance. Center/right-alignment is handled here.
+   * Also, if a PageCount instance has been assigned, values for
    * <code>PText.REPLACE_CURR_PAGE</code> and <code>PText.REPLACE_PAGE_COUNT</code> will be obtained and inserted into the text drawn.
    * @see #setPageCount(PageCount)
    */
   public void print(SimplePDF pdf) {
     pushPrint(pdf);
-    
+
     //Build text:
     String t=text;
-    if (pageCounter!=null) 
+    if (pageCounter!=null)
       t=replacePageVars(t);
-    
+
     //Now print:
-    if (rightAlign) 
+    if (rightAlign)
       pdf.moveX(getRight()-getLeft())
          .drawToLeft(t);
     else
-    if (center) 
+    if (center)
       pdf.drawCentered(t, getWidth());
     else
       pdf.draw(t);
@@ -134,9 +133,9 @@ public class PText extends AbstractText {
     pop(pdf);
   }
 
-  
 
-  
+
+
   ////////////////
   // DEBUGGING: //
   ////////////////
@@ -145,7 +144,7 @@ public class PText extends AbstractText {
   public String toString() {
     if (text!=null)
       return text;
-    else 
+    else
       return "";
   }
 }

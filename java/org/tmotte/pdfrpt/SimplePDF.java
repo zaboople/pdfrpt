@@ -29,7 +29,14 @@ import org.tmotte.common.text.StringChunker;
  * package (in either case with iText, of course). It attempts to simplify the
  * most common tasks involved in rendering PDF output, including fonts, colors, text positioning, line art,
  * and images.
- * </p>
+ * <p>
+ * Note that SimplePDF computes X &amp; Y coordinates with [0,0] as the upper left corner. Negative values
+ * are meaningless; positive values for X &amp; Y extend right &amp; down respectively from the origin.
+ * This is not the same coordinate system that iText uses, and is geometrically "incorrect" but arguably more
+ * intuitive for the typical programmer.
+ * <p>
+ * For more advanced usage, refer to the Report class.
+ * @see org.tmotte.pdfrpt.report.Report
  */
 public class SimplePDF implements java.io.Closeable {
 

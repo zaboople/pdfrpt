@@ -142,7 +142,7 @@ public class PRect extends ReportItem {
    * Encloses <code>item</code> within this PRect by creating a PGroup that contains both, and setting
    * the width and height of this PRect to be just
    * large enough to contain <code>item</code>'s width/height plus the specified top/right/bottom/left padding values.
-   * Works with both fill & outline PRects.
+   * Works with both fill &amp; outline PRects.
    * @param top Amount of space to put between <code>r</code> and top of rectangle.
    * @param right Amount of space to put between <code>r</code> and right side of rectangle.
    * @param bottom Amount of space to put between <code>r</code> and bottom of rectangle.
