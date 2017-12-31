@@ -13,18 +13,25 @@ import org.tmotte.pdfrpt.report.PGroup;
 import org.tmotte.pdfrpt.report.Report;
 import org.tmotte.pdfrpt.report.ReportItem;
 import org.tmotte.pdfrpt.SimplePDF;
+import org.tmotte.pdfrpt.test.ITest;
+import org.tmotte.pdfrpt.test.Test;
 
-public class TestPLine {
+public class TestPLine implements ITest {
 
   public static void main(String[] args) throws Exception {
-    SimplePDF pdf=new SimplePDF(
-      new FileOutputStream(args[0]), 
-      new PageInfo(PageInfo.LETTER_PORTRAIT, 25)
-    );      
-    new TestPLine().run(pdf);
-    pdf.close();
+    new TestPLine().test();
   }
-  
+
+  public @Override void test() throws Exception {
+    try (
+      SimplePDF pdf=new SimplePDF(
+        new FileOutputStream(new File("build", getClass().getName()+".pdf")),
+        new PageInfo(PageInfo.LETTER_PORTRAIT, 25)
+      )) {
+      run(pdf);
+    }
+  }
+
   public void run(SimplePDF pdf) throws Exception {
     pdf.setColor(0,0,80);
     Report report=new Report(pdf);
@@ -48,6 +55,6 @@ public class TestPLine {
     );
     report.print(pdf);
   }
-  
+
 
 }

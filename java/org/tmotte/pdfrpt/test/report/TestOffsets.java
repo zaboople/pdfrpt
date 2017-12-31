@@ -9,19 +9,26 @@ import org.tmotte.pdfrpt.report.PGroup;
 import org.tmotte.pdfrpt.report.Report;
 import org.tmotte.pdfrpt.report.ReportItem;
 import org.tmotte.pdfrpt.SimplePDF;
+import org.tmotte.pdfrpt.test.ITest;
+import org.tmotte.pdfrpt.test.Test;
 
-public class TestOffsets {
+public class TestOffsets implements ITest {
 
   public static void main(String[] args) throws Exception {
-    SimplePDF pdf=new SimplePDF(
-      new FileOutputStream(args[0]), 
-      new PageInfo(PageInfo.LETTER_PORTRAIT, 25)
-    );      
-    new TestOffsets().run(pdf);
-    pdf.close();
+    new TestOffsets().test();
   }
-  
-  
+
+  public @Override void test() throws Exception {
+    try (
+      SimplePDF pdf=new SimplePDF(
+        new FileOutputStream(new File("build", getClass().getName()+".pdf")),
+        new PageInfo(PageInfo.LETTER_PORTRAIT, 25)
+      )) {
+      run(pdf);
+    }
+  }
+
+
   public void run(SimplePDF pdf) throws Exception {
     java.util.Random ran=new java.util.Random(System.currentTimeMillis());
     pdf.setColor(0,0,80);
@@ -41,6 +48,6 @@ public class TestOffsets {
       );
     report.print(pdf);
   }
-  
+
 
 }

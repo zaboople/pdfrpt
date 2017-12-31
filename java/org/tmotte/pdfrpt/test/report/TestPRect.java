@@ -12,19 +12,26 @@ import org.tmotte.pdfrpt.report.PGroup;
 import org.tmotte.pdfrpt.report.Report;
 import org.tmotte.pdfrpt.report.ReportItem;
 import org.tmotte.pdfrpt.SimplePDF;
+import org.tmotte.pdfrpt.test.ITest;
+import org.tmotte.pdfrpt.test.Test;
 
-public class TestPRect {
+public class TestPRect implements ITest {
 
   public static void main(String[] args) throws Exception {
-    SimplePDF pdf=new SimplePDF(
-      new FileOutputStream(args[0]), 
-      new PageInfo(PageInfo.LETTER_PORTRAIT, 25)
-    );      
-    new TestPRect().run(pdf);
-    pdf.close();
+    new TestPRect().test();
   }
-  
-  
+
+  public @Override void test() throws Exception {
+    try (
+      SimplePDF pdf=new SimplePDF(
+        new FileOutputStream(new File("build", getClass().getName()+".pdf")),
+        new PageInfo(PageInfo.LETTER_PORTRAIT, 25)
+      )) {
+      run(pdf);
+    }
+  }
+
+
   public void run(SimplePDF pdf) throws Exception {
     java.util.Random ran=new java.util.Random(System.currentTimeMillis());
     pdf.setColor(0,0,80);
@@ -36,7 +43,7 @@ public class TestPRect {
         ,
         new PRect()
           .enclose(
-            20, 10, 20, 10, 
+            20, 10, 20, 10,
             new PTextLines(pdf, "What", "Super duper duper", "Wib wib wib", "howdy")
           )
           .addLeft(-1)
@@ -70,7 +77,7 @@ public class TestPRect {
               .setLineWidth(7)
               .enclose(
                 new PTextLines(
-                  new FontInfo().setFontSize(8).adjustLineSpacing(0, 0), 180, 
+                  new FontInfo().setFontSize(8).adjustLineSpacing(0, 0), 180,
                   "Here is a lot of text that needs to be broken up so it will fit in a reasonable space, I guess; or maybe"
                  +" that will never work out and we'll just be stuck with text going all over"
                 )
@@ -115,6 +122,6 @@ public class TestPRect {
     );
     report.print(pdf);
   }
-  
+
 
 }

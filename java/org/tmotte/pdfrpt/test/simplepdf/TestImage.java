@@ -4,21 +4,28 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URL;
-import org.tmotte.pdfrpt.SimplePDF;
 import org.tmotte.pdfrpt.PageInfo;
-
+import org.tmotte.pdfrpt.SimplePDF;
+import org.tmotte.pdfrpt.test.ITest;
+import org.tmotte.pdfrpt.test.Test;
 
 /** Tests image rendering. */
-public class TestImage {
+public class TestImage implements ITest {
+
   public static void main(String[] args) throws Exception {
+    new TestImage().test();
+  }
+
+  public @Override void test() throws Exception {
+    FileOutputStream output=new FileOutputStream(new File("build", getClass().getName()+".pdf"));
     SimplePDF pdf=
-      new SimplePDF(new FileOutputStream(args[0]), PageInfo.LETTER_PORTRAIT)
-        .setMargins(25,25,25,25);      
+      new SimplePDF(output, PageInfo.LETTER_PORTRAIT)
+        .setMargins(25,25,25,25);
 
     pdf.setLineWidth(4);
-    URL fileURL=new java.io.File("./lib/images/test2.jpg").toURL();
+    URL fileURL=new java.io.File("./lib/images/test2.jpg").toURI().toURL();
     Image image=SimplePDF.loadImage(
-      new FileInputStream(new java.io.File("./lib/images/test2.jpg")) 
+      new FileInputStream(new java.io.File("./lib/images/test2.jpg"))
     );
     {
       pdf.draw("Test 1: We will now use the same image object twice:").lineFeed();
@@ -35,7 +42,7 @@ public class TestImage {
        .move(-10, image.getScaledHeight()+10).draw("Image above here").lineFeed()
        .move(-20, 10);
     }
-    
+
     pdf.setX(0);
     {
       image.scaleToFit(25, 25);
@@ -63,6 +70,6 @@ public class TestImage {
     }
 
     pdf.close();
-
   }
+
 }

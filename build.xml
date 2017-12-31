@@ -4,11 +4,11 @@
   <!--**********-->
   <!--PROPERTIES-->
   <!--**********-->
-  
+
   <!--Properties: arbitrary environment prefix:-->
   <property environment="env"/>
-  <property file="build.properties"/>  
-  
+  <property file="build.properties"/>
+
   <!--Properties: directories:-->
   <property name="java.dir" value="java"/>
   <property name="build.dir" value="build"/>
@@ -16,20 +16,20 @@
   <property name="lib.dir" value="lib"/>
   <property name="appname" value="pdfrpt"/>
   <property name="appname.version" value="${appname}.${VERSION.PDFRPT}"/>
-  
-  
+
+
   <path id="classpath">
     <fileset dir="${lib.dir}" includes="*.jar"/>
   </path>
-  
-  
+
+
   <!--**************-->
   <!--TARGETS: HELP -->
   <!--**************-->
 
   <target name="help">
     <echo>
-  clean:         
+  clean:
     Deletes all generated classes etc.
   compile:
     Compile all Java files to ./build
@@ -48,8 +48,8 @@
     <delete dir="javadoc"/>
     <delete dir ="${build.dir}"/>
     <delete dir ="${dist.dir}"/>
-    <delete dir="web/WEB-INF/classes/org"/>          
-    <delete file="${appname}.jar"/>          
+    <delete dir="web/WEB-INF/classes/org"/>
+    <delete file="${appname}.jar"/>
     <delete>
       <fileset dir="." includes="*.pdf"/>
     </delete>
@@ -62,10 +62,16 @@
 
   <target name="compile" description="Compile main source tree java files">
     <mkdir dir="${build.dir}"/>
-    <javac destdir="${build.dir}" debug="true"
-           deprecation="false" failonerror="true">
+    <javac destdir="${build.dir}"
+          debug="true"
+          deprecation="true"
+          failonerror="true">
       <src path="${java.dir}"/>
       <classpath refid="classpath"/>
+      <compilerarg value="-Xlint:all"/>
+      <compilerarg value="-Xlint:-processing"/>
+      <compilerarg value="-Xlint:-serial"/>
+      <compilerarg value="-Werror"/>
     </javac>
   </target>
 
@@ -79,7 +85,7 @@
     </javadoc>
   </target>
 
- 
+
   <target name="jar" depends="compile">
     <mkdir dir ="${dist.dir}"/>
     <jar basedir="./build" destfile="dist/${appname.version}.jar"/>
@@ -89,10 +95,10 @@
   <!-- TARGETS: DISTRIBUTION -->
   <!-- ********************* -->
 
-  
+
   <target name="dist" depends="dist.src,dist.bin,dist.site">
     <echo>
-      Binary files in 
+      Binary files in
     </echo>
   </target>
   <target name="dist.site" depends="dist.src,dist.bin">

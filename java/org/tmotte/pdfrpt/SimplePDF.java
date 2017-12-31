@@ -25,17 +25,16 @@ import org.tmotte.common.text.StringChunker;
 
 /**
  * <p>
- * A simple wrapper for the iText PDF library, for use by itself or with the org.tmotte.pdfrpt.report
+ * A wrapper for the iText PDF library, for use by itself or with the org.tmotte.pdfrpt.report
  * package (in either case with iText, of course). It attempts to simplify the
- * most common tasks involved in rendering PDF output, including fonts, colors, text positioning, line art, 
+ * most common tasks involved in rendering PDF output, including fonts, colors, text positioning, line art,
  * and images.
  * </p>
  */
-public class SimplePDF {
-
+public class SimplePDF implements java.io.Closeable {
 
   /**
-   * Creates an iText Image from the data in <code>inStream</code>. 
+   * Creates an iText Image from the data in <code>inStream</code>.
    * @see #draw(Image)
    */
   public static Image loadImage(InputStream inStream) throws Exception {
@@ -45,7 +44,7 @@ public class SimplePDF {
     } finally {
       inStream.close();
     }
-    Image x=Image.getInstance(rawImage, null);  
+    Image x=Image.getInstance(rawImage, null);
     return x;
   }
   /**
@@ -54,7 +53,7 @@ public class SimplePDF {
   public static Image loadImage(URL url) throws Exception {
     return loadImage(url.openStream());
   }
-  
+
   ////////////////////
   // INSTANCE DATA: //
   ////////////////////
@@ -62,7 +61,7 @@ public class SimplePDF {
   private OutputStream outStream;
   private Document document;
   private PdfContentByte renderer;
-  
+
   //Non-state-saved data:
   private float currX, currY;
   private PageInfo pageInfo;
@@ -83,7 +82,7 @@ public class SimplePDF {
   //  INITIALIZATION  //
   //////////////////////
 
-  
+
   /**
    * Starts a new PDF, to be written to <code>outStream</code>, and using the specified
    * page size and margins. Invoke <code>SimplePDF.close()</code> when the PDF is finished.
@@ -103,7 +102,7 @@ public class SimplePDF {
   public SimplePDF(OutputStream outStream, Rectangle pageSize) throws Exception{
     this(outStream, new PageInfo(pageSize));
   }
-  /** 
+  /**
    * Shortcut to <code>SimplePDF(outStream, new PageInfo())</code>. The PDF will use portrait/letter page size.
    */
   public SimplePDF(OutputStream outStream) throws Exception {
@@ -111,7 +110,7 @@ public class SimplePDF {
   }
 
 
-  
+
   private void setOutputStream(OutputStream outStream) throws Exception {
     this.outStream=outStream;
     PdfWriter writer=PdfWriter.getInstance(document, outStream);
@@ -132,7 +131,7 @@ public class SimplePDF {
   ///////////
 
   /**
-   * Saves all of the state concerning font, color, and line width of drawn lines; does not 
+   * Saves all of the state concerning font, color, and line width of drawn lines; does not
    * save margin settings or X-Y coordinate position. Use <code>restoreState()</code> to reset back
    * to the prior state.
    * @see #restoreState()
@@ -149,7 +148,7 @@ public class SimplePDF {
     return this;
   }
   /**
-   * Companion method to <code>saveState()</code>; returns font, color and line width 
+   * Companion method to <code>saveState()</code>; returns font, color and line width
    * settings to the state previously saved by <code>saveState()</code>.
    * @see #saveState()
    * @throws RuntimeException If no call to saveState was made.
@@ -162,7 +161,7 @@ public class SimplePDF {
     return this;
   }
   /**
-   * Indicates whether the SimplePDF instance is currently in "saved state" mode, 
+   * Indicates whether the SimplePDF instance is currently in "saved state" mode,
    * i.e. <code>saveState()</code> has been invoked without
    * a following call to <code>restoreState()</code>.
    * @see #saveState()
@@ -170,19 +169,19 @@ public class SimplePDF {
   public boolean isStateSaved() {
     return stateSaved;
   }
-  
+
   ////////////////
   // EXPOSED    //
   // INTERNALS: //
   ////////////////
-  
+
   /** Obtains the internal iText Document object. */
   public Document getDocument() {
     return document;
   }
-  /** 
+  /**
    * Obtains the internal iText renderer object. This object contains advanced rendering methods for graphics that
-   * are not directly supported by SimplePDF. 
+   * are not directly supported by SimplePDF.
    * @see #getITextX()
    * @see #getITextY()
    */
@@ -194,8 +193,8 @@ public class SimplePDF {
   // INSTANCE FONT METHODS: //
   ////////////////////////////
 
-  /** 
-   * Sets font information according to values set in <code>fontInfo</code>. 
+  /**
+   * Sets font information according to values set in <code>fontInfo</code>.
    */
   public SimplePDF setFontInfo(FontInfo fontInfo) {
     this.fontInfo=fontInfo;
@@ -205,26 +204,26 @@ public class SimplePDF {
   public FontInfo getFontInfo() {
     return fontInfo;
   }
-  
+
   //////////////////////////
   // MARGINS / PAGE SIZE: //
   //////////////////////////
-  
-  /** 
+
+  /**
    * Gets the useable page width, i.e. between page margins; this is determined by the PageInfo instance
    * passed to SimplePDF's constructor, as well as by <code>SimplePDF.setMargins()</code>.
    */
   public float getWidth() {
     return pageInfo.getWidth();
   }
-  /** 
+  /**
    * Gets the useable page height, i.e. between page margins; this is determined by the PageInfo instance
    * passed to SimplePDF's constructor, as well as by <code>SimplePDF.setMargins()</code>.
    */
   public float getHeight(){
     return pageInfo.getHeight();
   }
-  /** 
+  /**
    * Sets the margins on the page.
    */
   public SimplePDF setMargins(float top, float right, float bottom, float left) {
@@ -238,7 +237,7 @@ public class SimplePDF {
   // POSITIONING: //
   //////////////////
 
-  // POSITION SET: 
+  // POSITION SET:
 
   /**
    * Sets the X coordinate relative to the left margin. <code>setX(0)</code>
@@ -268,7 +267,7 @@ public class SimplePDF {
   }
 
 
-  //POSITION MOVE:  
+  //POSITION MOVE:
 
   /**
    * Moves the internal X coordinate; positive values of <code>distance</code> will
@@ -293,16 +292,16 @@ public class SimplePDF {
     return this;
   }
 
-  // POSITION GET: 
+  // POSITION GET:
 
-  /** 
+  /**
    * Obtains the X coordinate position, relative to the left margin.
    * @see #setX(float)
    */
   public float getX(){
     return currX-pageInfo.marginLeft;
   }
-  /** 
+  /**
    * Obtains the Y coordinate position, relative to the top margin.
    * @see #setY(float)
    */
@@ -311,9 +310,9 @@ public class SimplePDF {
   }
   /**
    * Determines whether the intended vertical position change will
-   * move past the bottom margin; useful when deciding whether to 
+   * move past the bottom margin; useful when deciding whether to
    * start a new page. Does not change the current position, however.
-   * @return True if <code>moveY(distance)</code> will move the Y 
+   * @return True if <code>moveY(distance)</code> will move the Y
    *   coordinate below the bottom margin.
    */
   public boolean willMovePastBottom(float distance) {
@@ -321,7 +320,7 @@ public class SimplePDF {
   }
   /**
    * This obtains the X coordinate as seen by iText. This is only
-   * useful when making direct calls to the iText PDFContentByte 
+   * useful when making direct calls to the iText PDFContentByte
    * instance.
    * @see #getInternalRenderer()
    */
@@ -330,14 +329,14 @@ public class SimplePDF {
   }
   /**
    * This obtains the Y coordinate as seen by iText. This is only
-   * useful when making direct calls to the iText PDFContentByte 
+   * useful when making direct calls to the iText PDFContentByte
    * instance.
    * @see #getInternalRenderer()
    */
   public float getITextY() {
     return currY;
   }
-  
+
   ////////////
   // COLOR: //
   ////////////
@@ -360,8 +359,8 @@ public class SimplePDF {
    * Sets the color using Java's standard Color object. This is passed directly to iText's BaseColor object.
    */
   public SimplePDF setColor(java.awt.Color color) {
-    return setColor(new BaseColor(color));
-  }  
+    return setColor(new BaseColor(color.getRGB()));
+  }
 
   ///////////////////////////////
   // GEOMETRY-DRAWING METHODS: //
@@ -380,7 +379,7 @@ public class SimplePDF {
 
   /**
    * Draws a straight line from the current X,Y coordinates according to the
-   * distance specified by xDistance and yDistance, using the current line width and color. 
+   * distance specified by xDistance and yDistance, using the current line width and color.
    * Note that width-wise, half of the line will appear to either side of the actual
    * path drawn.
    * @param xDistance Positive values draw to the right, negative to the left.
@@ -397,13 +396,13 @@ public class SimplePDF {
   }
   /**
    * <p>Draws a rectangle outline from the current X,Y coordinates according
-   * to the distance specified by <code>width</code> and <code>height</code>, 
-   * using the current line width and color. 
+   * to the distance specified by <code>width</code> and <code>height</code>,
+   * using the current line width and color.
    * </p>
    * <p>Note that the line will drawn be <i>inside</i>
    * the specified coordinates, not half-in/half-out; although this is atypical,
    * it allows easier control of the rectangle's position.
-   * </p> 
+   * </p>
    * @param width Positive values draw to the right, negative to the left.
    * @param height Positive values draw downwards, negative upwards.
    * @see #setLineWidth(float)
@@ -413,15 +412,15 @@ public class SimplePDF {
   public SimplePDF drawRect(float width, float height){
     checkDraw();
     float half=lineWidth/2;
-    renderer.rectangle(currX+half, currY-half, width-lineWidth, -(height-lineWidth));  
+    renderer.rectangle(currX+half, currY-half, width-lineWidth, -(height-lineWidth));
     renderer.stroke();
     return this;
   }
 
   /**
-   * <p>Generally the same as <code>drawRect()</code>, but with rounded corners. The specified offsets should be the 
+   * <p>Generally the same as <code>drawRect()</code>, but with rounded corners. The specified offsets should be the
    * perpendicular distance from each corner (i.e. the distance along the x and y
-   * axes from the corner) where that corner's curve begins. 
+   * axes from the corner) where that corner's curve begins.
    * </p>
    * @param width The width of the rectangle.
    * @param height The height of the rectangle.
@@ -443,13 +442,13 @@ public class SimplePDF {
     drawRectRounded(width, height, offsetTL, offsetTR, offsetBR, offsetBL, true);
     return this;
   }
-  
+
   private final static float hypFactor=1f-((float)Math.cos(Math.PI/4));
   private static float getHype(float offset){
     return offset/hypFactor;
   }
   private SimplePDF drawRectRounded(
-      float width, float height, 
+      float width, float height,
       float offsetTL, float offsetTR, float offsetBR, float offsetBL,
       boolean fill
     ){
@@ -486,7 +485,7 @@ public class SimplePDF {
   }
   /**
    * Fills in a rectangle from the current X,Y coordinates according
-   * to the distance specified by <code>width</code> and <code>height</code>, 
+   * to the distance specified by <code>width</code> and <code>height</code>,
    * using the current line width.
    * @param width Positive values draw to the right, negative to the left.
    * @param height Positive values draw downwards, negative upwards.
@@ -496,7 +495,7 @@ public class SimplePDF {
    */
   public SimplePDF fillRect(float width, float height){
     checkDraw();
-    renderer.rectangle(currX, currY, width, -height);  
+    renderer.rectangle(currX, currY, width, -height);
     renderer.fill();
     return this;
   }
@@ -511,7 +510,7 @@ public class SimplePDF {
    * @see #loadImage(InputStream)
    */
   public SimplePDF draw(Image image) throws Exception {
-    float imgHeight=(image.getScaledHeight()), 
+    float imgHeight=(image.getScaledHeight()),
           imgWidth=(image.getScaledWidth());
     renderer.addImage(image, imgWidth, 0, 0, imgHeight, currX, currY-imgHeight);
     return this;
@@ -556,12 +555,12 @@ public class SimplePDF {
     renderer.beginText();
     renderer.setTextMatrix(x, y-(fontInfo.getMaxAscent()+fontInfo.getAdjustLineSpacingTop()));
     renderer.showText(text);
-    renderer.stroke();
-    renderer.endText();   
+    //renderer.stroke(); Suddenly illegal
+    renderer.endText();
     return this;
   }
   /**
-   * Moves the Y coordinate downwards by the amount of <code>getFontInfo().getTextLineHeight()</code>; 
+   * Moves the Y coordinate downwards by the amount of <code>getFontInfo().getTextLineHeight()</code>;
    * does not affect the X coordinate.
    * @see FontInfo#getTextLineHeight
    */
@@ -571,7 +570,7 @@ public class SimplePDF {
   }
   /**
    * Determines whether <code>lineFeed()</code> will push the Y coordinate down below the bottom
-   * margin. 
+   * margin.
    */
   public boolean lineFeedWillExceed() {
     return currY-(fontInfo.getTextLineHeight())<pageInfo.marginBottom;
@@ -582,8 +581,8 @@ public class SimplePDF {
   // PAGING: //
   /////////////
 
-  /** 
-   * Starts a new page in the document. Does not change the current X,Y coordinates, so 
+  /**
+   * Starts a new page in the document. Does not change the current X,Y coordinates, so
    * those may need to be set before drawing anything.
    * @see #setXY(float, float)
    */
@@ -602,13 +601,19 @@ public class SimplePDF {
   // CLOSE: //
   ////////////
 
-  /** 
+  /**
    * Closes the internal iText Document object and the OutputStream.
    */
-  public void close() throws java.io.IOException {
-    document.close();
-    outStream.flush();
-    outStream.close();
+  public @Override void close() throws java.io.IOException {
+    if (document!=null)
+      document.close();
+    document=null;
+    if (outStream!=null) {
+      outStream.flush();
+      outStream.close();
+      outStream=null;
+    }
+    outStream=null;
   }
 
 
@@ -627,22 +632,22 @@ public class SimplePDF {
       renderer.setColorFill(c);
       renderer.setColorStroke(c);
       lastColor=c;
-    }      
+    }
     else
     if (c==null && color!=null && lastColor!=color){
       renderer.setColorFill(color);
       renderer.setColorStroke(color);
       lastColor=color;
-    }          
+    }
   }
-  private void checkDraw() {  
+  private void checkDraw() {
     if (renderer==null)
       return;
     if (color!=null && lastColor!=color){
       renderer.setColorFill(color);
       renderer.setColorStroke(color);
       lastColor=color;
-    }          
+    }
     if (lastLineWidth!=lineWidth){
       renderer.setLineWidth(lineWidth);
       lastLineWidth=lineWidth;

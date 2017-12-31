@@ -10,26 +10,31 @@ import org.tmotte.pdfrpt.report.PGroup;
 import org.tmotte.pdfrpt.report.Report;
 import org.tmotte.pdfrpt.report.ReportItem;
 import org.tmotte.pdfrpt.SimplePDF;
+import org.tmotte.pdfrpt.test.ITest;
+import org.tmotte.pdfrpt.test.Test;
 
-public class TestPGroup {
+public class TestPGroup implements ITest {
 
   public static void main(String[] args) throws Exception {
-    SimplePDF pdf=new SimplePDF(
-        new FileOutputStream(args[0]), 
+    new TestPGroup().test();
+  }
+
+  public @Override void test() throws Exception {
+    try (
+      SimplePDF pdf=new SimplePDF(
+        new FileOutputStream(new File("build", getClass().getName()+".pdf")),
         new PageInfo(PageInfo.LETTER_PORTRAIT, 25)
       ).setFontInfo(
         new FontInfo().adjustLineSpacing(2, 2)
-      );
-    new TestPGroup().run(pdf);
-    pdf.close();
+      )
+    ) {
+      run(pdf);
+    }
   }
-  
-  
+
   public void run(SimplePDF pdf) throws Exception {
-    java.util.Random ran=new java.util.Random(System.currentTimeMillis());
     pdf.setColor(0,0,80);
-    Report report=new Report(pdf);
-    report
+    new Report(pdf)
       .addVerticalCenter(
         new PText(pdf, "I am dead in the middle top, but only because I was added first.")
       )
@@ -37,31 +42,30 @@ public class TestPGroup {
         new PText(pdf, "I'm over on the right, man.")
         ,
         new PTextLines(
-          new FontInfo().adjustLineSpacing(0.5f, 0.5f), 
+          new FontInfo().adjustLineSpacing(0.5f, 0.5f),
           "Yeah", "well I am too", "if that matters."
         )
       )
       .add(
         PGroup.HCenter, PGroup.VCenter
-        , 
+        ,
         new PText(pdf, "I'm dead center, baby.")
       )
       .add(
         PGroup.HLeft, PGroup.VBottom
-        , 
+        ,
         new PText(pdf, "I'm down here at the bottom left.")
       )
       .add(
         PGroup.HRight, PGroup.VBottom
-        , 
+        ,
         new PTextLines(
-          new FontInfo().adjustLineSpacing(0,0), 
+          new FontInfo().adjustLineSpacing(0,0),
           "I'm down here at the bottom right,", "but I have multiple", "lines."
         ).rightAlign()
       )
-      ;
-    report.print(pdf);
+      .print(pdf);
   }
-  
+
 
 }
