@@ -1,6 +1,6 @@
 ## PDFRpt
 
-I built this library because I didn't think the popular iText library was very convenient & straightforward for my use case, which is general purpose report generation.
+I built this library because I didn't think the popular iText library was very convenient & straightforward for my use case, which is general purpose report generation. On the other hand, most reporting tools are even worse, forcing one to rely on XML/XSL, WYSIWYG GUI's, awkward configuration systems and so forth.
 
 PDFRpt acts as a "wrapper" API for iText, and requires no specific knowledge of iText on the part of the programmer. However, it still allows one to drill down to the underlying iText core to take advantage of advanced capabilities. Features:
 
@@ -8,7 +8,8 @@ PDFRpt acts as a "wrapper" API for iText, and requires no specific knowledge of 
 * Relative positioning with precise alignment down to the pixel
 * Automated handling of page overflow and numbering
 * Automatic text wrapping
-* Essential graphical capabilities include geometric shapes, embedded images, fonts & colors
+* Essential graphics including geometric shapes, embedded images, fonts & colors
+* No annotations, reflection, byte-code rewriting, configuration files, native calls or other cruft necessary.
 * Includes detailed javadocs & examples
 
 ### Documentation:
